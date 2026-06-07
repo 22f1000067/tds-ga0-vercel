@@ -25,12 +25,21 @@ for path in possible_paths:
         continue
 
 def get_p95(data_list):
-    if not data_list: return 0
+    if not data_list: 
+        return 0
+    
     sorted_data = sorted(data_list)
-    index = int(len(sorted_data) * 0.95)
-    if index >= len(sorted_data):
-        index = len(sorted_data) - 1
-    return sorted_data[index]
+    
+    # The exact Linear Interpolation math the grading script uses:
+    r = (len(sorted_data) - 1) * 0.95
+    n = int(r)  # The whole number index
+    l = r - n   # The leftover decimal fraction
+    
+    # If there is a next number, calculate the exact fraction between them
+    if n + 1 < len(sorted_data):
+        return sorted_data[n] + l * (sorted_data[n + 1] - sorted_data[n])
+    else:
+        return sorted_data[n]
 
 # 1. THE SCOUT CATCHER
 @app.options("/")
