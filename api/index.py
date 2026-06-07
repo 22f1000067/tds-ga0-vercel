@@ -43,6 +43,14 @@ def get_p95(data_list):
         index = len(sorted_data) - 1
     return sorted_data[index]
 
+# Catch the invisible "scout" request and give it the VIP pass
+@app.options("/")
+def preflight_handler(response: Response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    return {}
+    
 @app.post("/")
 def calculate_metrics(req: AnalyticsRequest):
     results = []
